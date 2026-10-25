@@ -1,0 +1,52 @@
+Options -Indexes
+DirectoryIndex index.php
+
+# ---------- فرض HTTPS (شهادة SSL مجانية متوفرة في Hostinger — فعّلها من hPanel > SSL) ----------
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{HTTPS} !=on
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https [NC]
+    RewriteCond %{HTTP_HOST} !^(localhost|127\.0\.0\.1)(:[0-9]+)?$ [NC]
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    # روابط نظيفة (SEO Friendly URLs)
+    RewriteRule ^products/?$ products.php [L,QSA]
+    RewriteRule ^product/([0-9]+)(?:-[^/]*)?/?$ product.php?id=$1 [L,QSA]
+    RewriteRule ^cart/?$ cart.php [L,QSA]
+    RewriteRule ^about/?$ about.php [L,QSA]
+    RewriteRule ^contact/?$ contact.php [L,QSA]
+    RewriteRule ^sitemap\.xml$ sitemap.php [L]
+</IfModule>
+
+# منع الوصول لملفات حساسة
+<FilesMatch "(\.(sql|log|md|env|example|bak|zip|sh|ini)$|^\.git|^composer\.(json|lock)$)">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order deny,allow
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# رؤوس أمان أساسية
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+    Header set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+</IfModule>
+
+# ضغط وتخزين مؤقت لتسريع الموقع
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/xml application/javascript application/json image/svg+xml
+</IfModule>
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/png  "access plus 30 days"
+    ExpiresByType image/jpeg "access plus 30 days"
+    ExpiresByType image/webp "access plus 30 days"
+    ExpiresByType image/svg+xml "access plus 30 days"
+    ExpiresByType text/css   "access plus 1 day"
+    ExpiresByType application/javascript "access plus 1 day"
+</IfModule>

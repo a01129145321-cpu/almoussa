@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /config/
+Disallow: /includes/
+Disallow: /cart_action.php
+Disallow: /process_order.php
+
+Sitemap: https://almousasp.com/sitemap.xml

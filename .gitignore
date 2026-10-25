@@ -1,0 +1,13 @@
+# أسرار محلية — لا تُرفع إلى GitHub أبدًا
+config/config.local.php
+
+# صور ترفعها من لوحة التحكم (تُدار على السيرفر)
+uploads/products/*
+!uploads/products/.htaccess
+uploads/parts/*
+!uploads/parts/.htaccess
+
+# ملفات النظام
+.DS_Store
+Thumbs.db
+*.log
